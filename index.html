@@ -2,49 +2,75 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light">
 <title>请用浏览器打开</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#fff;color:#141b28;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}.guide{min-height:100dvh;padding:24px 22px 42px;position:relative;text-align:center}.arrow{position:absolute;right:26px;top:8px;color:#1673e8;font-size:72px;line-height:1;transform:rotate(-18deg)}h1{font-size:30px;margin:88px 0 22px;font-weight:750}.hint{font-size:19px;line-height:1.85;margin:0 0 26px}.hint strong{color:#1673e8}.demo{background:#f1f3f6;border-radius:18px;padding:20px 14px 25px;margin:0 auto 28px;max-width:460px;box-shadow:inset 0 0 0 1px #e5e8ed}.demo-title{color:#737b89;margin-bottom:17px}.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.tile{background:#fff;border-radius:12px;padding:13px 2px;font-size:12px;color:#526070}.tile .symbol{font-size:26px;display:block;margin-bottom:7px}.tile.active{outline:3px solid #2377f1;color:#1765cf;font-weight:bold}.btn{display:block;border:0;border-radius:13px;background:#1673e8;color:#fff;padding:15px 16px;font-size:17px;font-weight:700;text-decoration:none;width:100%;max-width:460px;margin:12px auto;cursor:pointer}.btn.secondary{background:#eef4ff;color:#1765cf}.target{font-size:12px;overflow-wrap:anywhere;color:#697586;margin:24px auto 10px;max-width:460px}.note{font-size:12px;line-height:1.7;color:#77808d;max-width:460px;margin:16px auto}.error{color:#bd2525;font-size:15px}.hidden{display:none}@media(max-width:380px){h1{font-size:26px}.hint{font-size:17px}.arrow{font-size:58px}}
+:root{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;color:#17202c;background:#fff}*{box-sizing:border-box}body{margin:0}.page{max-width:520px;min-height:100svh;margin:auto;padding:calc(35px + env(safe-area-inset-top)) 23px 36px;text-align:center;position:relative}.arrow{position:absolute;right:27px;top:calc(8px + env(safe-area-inset-top));font-size:67px;color:#1677ed;line-height:1;transform:rotate(-13deg)}h1{margin:68px 0 16px;font-size:31px;letter-spacing:.02em}.sub{font-size:18px;line-height:1.9;margin:0 auto 24px;color:#333e4e}.accent{font-weight:750;color:#1677ed}.panel{background:#f3f5f8;border-radius:18px;padding:19px 12px 23px;margin:0 auto 24px}.panel-head{font-size:13px;color:#667184;margin-bottom:16px}.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.tile{background:#fff;border-radius:12px;min-height:80px;padding:12px 2px 8px;font-size:12px;color:#596474}.tile .symbol{display:block;font-size:25px;margin-bottom:8px}.tile.active{outline:2px solid #1878ed;color:#176ad6;font-weight:700}.btn{border:0;border-radius:13px;background:#1677ed;color:white;font-size:17px;font-weight:700;padding:15px 20px;width:100%;cursor:pointer}.minor{font-size:13px;color:#687385;line-height:1.8;margin:17px 0 0}.error{color:#bc3030;font-size:15px;line-height:1.7}.hidden{display:none}@media(max-width:370px){h1{font-size:27px}.sub{font-size:16px}.arrow{font-size:55px}.tile{font-size:11px}}
 </style>
 </head>
 <body>
-<main class="guide">
-<div class="arrow" aria-hidden="true">↗</div>
-<h1>请用浏览器打开</h1>
-<p class="hint">请点击屏幕右上角 <strong>···</strong><br>选择 <strong>“在浏览器打开”</strong><br><span id="extra">如无此选项，请复制网址后粘贴到浏览器</span></p>
-<div class="demo" aria-label="操作示意图">
-<div class="demo-title">操作示意（不同版本菜单可能不同）</div>
-<div class="tiles"><div class="tile"><span class="symbol">☆</span>收藏</div><div class="tile"><span class="symbol">🔗</span>复制链接</div><div class="tile"><span class="symbol">↗</span>分享</div><div class="tile active"><span class="symbol">🌐</span>浏览器打开</div></div>
-</div>
-<p id="status" class="error hidden"></p>
-<button class="btn" id="copy">复制链接</button>
+<main class="page">
+  <div class="arrow" aria-hidden="true">↗</div>
+  <h1>请用浏览器打开</h1>
+  <p class="sub" id="instruction">请点击右上角 <span class="accent">···</span><br>选择 <span class="accent">“在浏览器打开”</span></p>
+  <section class="panel" aria-label="浏览器打开操作示意">
+    <div class="panel-head">操作示意（菜单因版本而异）</div>
+    <div class="tiles">
+      <div class="tile"><span class="symbol">☆</span>收藏</div>
+      <div class="tile"><span class="symbol">🔗</span>复制链接</div>
+      <div class="tile"><span class="symbol">↗</span>分享</div>
+      <div class="tile active"><span class="symbol">🌐</span>浏览器打开</div>
+    </div>
+  </section>
+  <p class="error hidden" id="error" role="alert"></p>
+  <button class="btn" type="button" id="copy">复制链接</button>
+  <p class="minor" id="hint">如果没有“在浏览器打开”，请复制链接并粘贴到手机浏览器。</p>
 </main>
 <script>
-(function(){
-'use strict';
-const allowed=new Set(['bm.jdfree.ccwu.cc']);
-const fallback='https://bm.jdfree.ccwu.cc/';
-const query=new URLSearchParams(location.search).get('url');
-let target;
-try{
-  target=new URL(query||fallback);
-  if(target.protocol!=='https:' || !allowed.has(target.hostname.toLowerCase()) || target.username || target.password || (target.port && target.port!=='443')) throw Error('invalid');
-}catch(e){
-  document.getElementById('status').textContent='链接无效，请检查后重试。';
-  document.getElementById('status').classList.remove('hidden');
-  document.getElementById('copy').disabled=true;
-  return;
-}
-const url=target.href;
-document.getElementById('copy').addEventListener('click',async function(){
-  try{await navigator.clipboard.writeText(url);this.textContent='已复制链接';}
-  catch(e){window.prompt('请复制以下网址：',url);}
-});
-const ua=navigator.userAgent;
-const embedded=/MicroMessenger|QQ\//i.test(ua) || (/\bQQ\b/i.test(ua) && /Android/i.test(ua));
-if(/iPhone|iPad|iPod/i.test(ua)) document.getElementById('extra').textContent='如无此选项，请复制链接并在Safari中打开';
-if(!embedded) location.replace(url);
+(()=>{
+  'use strict';
+  const ALLOWED_HOSTS=new Set(['bm.jdfree.ccwu.cc']);
+  const DEFAULT_URL='https://bm.jdfree.ccwu.cc/';
+  const params=new URLSearchParams(location.search);
+  const input=params.get('url')||DEFAULT_URL;
+  let destination;
+  try{
+    destination=new URL(input);
+    if(destination.protocol!=='https:' || !ALLOWED_HOSTS.has(destination.hostname.toLowerCase()) || destination.username || destination.password || (destination.port && destination.port!=='443')) throw new Error('bad target');
+  }catch(e){
+    document.getElementById('error').textContent='链接无效，请联系分享者获取正确链接。';
+    document.getElementById('error').classList.remove('hidden');
+    document.getElementById('copy').disabled=true;
+    return;
+  }
+  const ua=navigator.userAgent;
+  const inWechat=/MicroMessenger/i.test(ua);
+  const inQQ=/QQ\//i.test(ua) || (/\bQQ\b/i.test(ua) && /Android/i.test(ua));
+  const isiOS=/iPhone|iPad|iPod/i.test(ua);
+  if(!(inWechat||inQQ)){
+    location.replace(destination.href);
+    return;
+  }
+  if(isiOS){
+    document.getElementById('instruction').innerHTML='请点击右上角 <span class="accent">···</span><br>选择 <span class="accent">“在Safari中打开”</span>或“在浏览器打开”';
+    document.getElementById('hint').textContent='如果没有对应选项，请复制链接并粘贴到Safari地址栏。';
+  }
+  // Copy the entry URL, not the final site: opening it in a regular browser redirects to the allowed destination.
+  const shareUrl=new URL(location.href);
+  shareUrl.search='';
+  shareUrl.hash='';
+  shareUrl.searchParams.set('url',destination.href);
+  const copy=document.getElementById('copy');
+  copy.addEventListener('click',async()=>{
+    try{
+      if(!navigator.clipboard || !navigator.clipboard.writeText) throw new Error('clipboard unavailable');
+      await navigator.clipboard.writeText(shareUrl.href);
+      copy.textContent='已复制，请粘贴到浏览器';
+    }catch(e){
+      window.prompt('请长按复制以下链接，然后粘贴到浏览器地址栏：',shareUrl.href);
+    }
+  });
 })();
 </script>
 </body>
