@@ -18,10 +18,7 @@
 <div class="tiles"><div class="tile"><span class="symbol">☆</span>收藏</div><div class="tile"><span class="symbol">🔗</span>复制链接</div><div class="tile"><span class="symbol">↗</span>分享</div><div class="tile active"><span class="symbol">🌐</span>浏览器打开</div></div>
 </div>
 <p id="status" class="error hidden"></p>
-<button class="btn" id="copy">复制官网网址</button>
-<a class="btn secondary" id="visit" href="#" rel="noopener noreferrer">访问官方网站</a>
-<div class="target" id="target"></div>
-<p class="note">仅访问您信任的网站。外部浏览器可能仍会进行安全检测，请勿忽略真实的风险提示。</p>
+<button class="btn" id="copy">复制链接</button>
 </main>
 <script>
 (function(){
@@ -34,23 +31,19 @@ try{
   target=new URL(query||fallback);
   if(target.protocol!=='https:' || !allowed.has(target.hostname.toLowerCase()) || target.username || target.password || (target.port && target.port!=='443')) throw Error('invalid');
 }catch(e){
-  document.getElementById('status').textContent='目标地址不在允许访问的官网域名列表中。';
+  document.getElementById('status').textContent='链接无效，请检查后重试。';
   document.getElementById('status').classList.remove('hidden');
   document.getElementById('copy').disabled=true;
-  document.getElementById('visit').removeAttribute('href');
-  document.getElementById('visit').style.pointerEvents='none';
   return;
 }
 const url=target.href;
-document.getElementById('target').textContent='目标网址：'+url;
-document.getElementById('visit').href=url;
 document.getElementById('copy').addEventListener('click',async function(){
-  try{await navigator.clipboard.writeText(url);this.textContent='已复制官网网址';}
+  try{await navigator.clipboard.writeText(url);this.textContent='已复制链接';}
   catch(e){window.prompt('请复制以下网址：',url);}
 });
 const ua=navigator.userAgent;
 const embedded=/MicroMessenger|QQ\//i.test(ua) || (/\bQQ\b/i.test(ua) && /Android/i.test(ua));
-if(/iPhone|iPad|iPod/i.test(ua)) document.getElementById('extra').textContent='如无此选项，请复制官网网址并在Safari中打开';
+if(/iPhone|iPad|iPod/i.test(ua)) document.getElementById('extra').textContent='如无此选项，请复制链接并在Safari中打开';
 if(!embedded) location.replace(url);
 })();
 </script>
